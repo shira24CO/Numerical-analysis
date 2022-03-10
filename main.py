@@ -8,4 +8,6 @@ def machine_epsilon():
     return epsilon
 
 print(machine_epsilon())
+print(exp)
+print(exp-machine_epsilon())
 
