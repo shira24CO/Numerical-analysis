@@ -4,6 +4,7 @@ class rankMatrix(object):
         self.R = len(Matrix)
         self.C = len(Matrix[0])
 
+
     # Function for exchanging two rows of a matrix
     def swap(self, Matrix, row1, row2, col):
         for i in range(col):
@@ -34,8 +35,6 @@ class rankMatrix(object):
         matrix.Display(matrixI,matrix.R,matrix.C)
 
 
-
-
     # Find rank of a matrix
     def rankOfMatrix(self, Matrix):
         rank = self.C
@@ -55,7 +54,6 @@ class rankMatrix(object):
                         # column as 0 except entry 'mat[row][row]'
                         multiplier = (Matrix[col][row] /
                                       Matrix[row][row])
-                        #self.create_I_matrix(self.C,-1*multiplier,row,col)
                         print(self.create_I_matrix(self.R, multiplier, row, col))
                         print(multiplier)
                         for i in range(rank):
@@ -108,6 +106,24 @@ class rankMatrix(object):
         print(self.Display(Matrix, self.R,self.C))
         return (rank)
 
+def determinant(matrix, mul):
+    width = len(matrix)
+    if width == 1:
+        return mul * matrix[0][0]
+    else:
+        sign = -1
+        answer = 0
+        for i in range(width):
+            m = []
+            for j in range(1, width):
+                buff = []
+                for k in range(width):
+                    if k != i:
+                        buff.append(matrix[j][k])
+                m.append(buff)
+            sign *= -1
+            answer = answer + mul * determinant(m, sign * matrix[0][i])
+    return answer
 
 # Driver Code
 if __name__ == '__main__':
@@ -115,8 +131,14 @@ if __name__ == '__main__':
               [4, 5, 6],
               [7, 8, 8]]
     RankMatrix = rankMatrix(Matrix)
-    print("Rank of the Matrix is:",
-          (RankMatrix.rankOfMatrix(Matrix)))
+    if determinant(Matrix, 1) != 0:
+        print("Rank of the Matrix is:",
+              (RankMatrix.rankOfMatrix(Matrix)))
+    else:
+        print("The matrix not invertable")
+
+
+
 
 # This code is contributed by Vikas Chitturi
     '''[[1,0,0],
