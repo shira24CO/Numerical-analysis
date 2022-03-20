@@ -7,7 +7,7 @@ def machine_epsilon():
          epsilon_machine = epsilon_machine/2
     return epsilon
 
-print(machine_epsilon())
 print(exp)
 print(exp-machine_epsilon())
+
 
