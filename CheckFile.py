@@ -1,24 +1,36 @@
-# Python 3 program to find rank of a matrix
-class rankMatrix(object):
+'''# Python 3 program to find rank of a matrix
+class rankMatrix:
     def __init__(self, Matrix):
         self.R = len(Matrix)
         self.C = len(Matrix[0])
+        self.matrix = Matrix
 
 
+    def Imatrix(self,size,line1,line2):
+        matrixI = rankMatrix([])
+        for i in range(size):
+            matrixI_helper = []
+            for j in range(size):
+                if i == j:
+                    matrixI_helper.append(1)
+                else:
+                    matrixI_helper.append(0)
+            matrixI.matrix.append(matrixI_helper)
+        matrixI.swap(line1,line2,size)
+        print("ooooooo")
+        matrixI.Display(matrixI.matrix)
+        return matrixI
+
+
+
+
+    def Display(self,matrix):
+        for i in matrix:
+            for j in i:
+                print(j, end="  ")
+            print()
+        print()
     # Function for exchanging two rows of a matrix
-    def swap(self, Matrix, row1, row2, col):
-        for i in range(col):
-            temp = Matrix[row1][i]
-            Matrix[row1][i] = Matrix[row2][i]
-            Matrix[row2][i] = temp
-
-    # Function to Display a matrix
-    def Display(self, Matrix, row, col):
-        for i in range(row):
-            for j in range(col):
-                print("aaa " + str(Matrix[i][j]))
-            print('\n')
-
     @staticmethod
     def create_I_matrix(size,elementary_value,row,column):
         matrixI = []
@@ -32,12 +44,40 @@ class rankMatrix(object):
             matrixI.append(matrixI_helper)
         matrixI[row][column] = elementary_value
         matrix = rankMatrix(matrixI)
-        matrix.Display(matrixI,matrix.R,matrix.C)
+        matrix.Display(matrixI)
 
+    def swap(self,Matrix, row1, row2, col):
+        for i in range(col):
+            temp = Matrix[row1][i]
+            Matrix[row1][i] = Matrix[row2][i]
+            Matrix[row2][i] = temp
 
     # Find rank of a matrix
     def rankOfMatrix(self, Matrix):
         rank = self.C
+        for i in range(self.C):
+            index = []
+            n = 0
+            max = Matrix[i][0]
+            index.append(i)
+            index.append(n)
+            while n < self.C:
+                if(Matrix[i][n] > max):
+                    max = Matrix[i][n]
+                    index = []
+                    index.append(i)
+                    index.append(n)
+                n = n + 1
+            self.Imatrix(self.C, index[0],index[1])
+            self.swap(Matrix,i, index[1],self.C )
+            print("swap")
+
+        self.Display(Matrix)
+
+
+
+
+
         for row in range(0, rank, 1):      # for i in range(2,10,3) ---> 2,5,8
 
             # Before we visit current row
@@ -54,7 +94,7 @@ class rankMatrix(object):
                         # column as 0 except entry 'mat[row][row]'
                         multiplier = (Matrix[col][row] /
                                       Matrix[row][row])
-                        print(self.create_I_matrix(self.R, multiplier, row, col))
+                        self.create_I_matrix(self.R, multiplier, row, col)
                         print(multiplier)
                         for i in range(rank):
                             Matrix[col][i] -= (multiplier *
@@ -103,8 +143,9 @@ class rankMatrix(object):
                 row -= 1
         #print(self.create_I_matrix(self.R, multiplier, row, col))
 
-        print(self.Display(Matrix, self.R,self.C))
+        self.Display(Matrix)
         return (rank)
+
 
 def determinant(matrix, mul):
     width = len(matrix)
@@ -127,13 +168,13 @@ def determinant(matrix, mul):
 
 # Driver Code
 if __name__ == '__main__':
-    Matrix = [[1, 2, 3],
+    Matrix = [[1, 9, 3],
               [4, 5, 6],
               [7, 8, 8]]
     RankMatrix = rankMatrix(Matrix)
-    if determinant(Matrix, 1) != 0:
-        print("Rank of the Matrix is:",
-              (RankMatrix.rankOfMatrix(Matrix)))
+
+#    if determinant(Matrix, 1) != 0:
+    print("Rank of the Matrix is:",(RankMatrix.rankOfMatrix(Matrix)))
     else:
         print("The matrix not invertable")
 
@@ -141,8 +182,9 @@ if __name__ == '__main__':
 
 
 # This code is contributed by Vikas Chitturi
-    '''[[1,0,0],
+[[1,0,0],
        [0,-3,0],
        [0,0,-1]]'''
 
 
+'''
