@@ -1,6 +1,5 @@
 import math
 
-
 def printmat(matrix):
     for i in matrix:
         for j in i:
@@ -20,71 +19,72 @@ def multiplyMatrix(mat1,mat2):
     return result
 
 #מטריצה כולל איבר b 
-def solv(A):
+def solvLU(A):
     size = len(A)  # Give us total of lines
     # (1) Extract the b vector
-    b = [0 for i in range(size)]
+    bv = [0 for i in range(size)]
     for i in range(size):
-        b[i] = A[i][size]
-    print("b= ",b)
+        bv[i] = A[i][size]
+    print("b= ",bv)
 
-    # (2) Fill L matrix and its diagonal with 1
-    ID = [[0 for i in range(size)] for i in range(size)]
+    # (2) Fill L Umat and its diagonal with 1
+    Lmat = [[0 for i in range(size)] for i in range(size)]
     for i in range(size):
-        ID[i][i] = 1
+        Lmat[i][i] = 1
 
-    # (3) Fill U matrix
-    matrix = [[0 for i in range(size)] for i in range(size)]
+    # (3) Fill U Umat
+    Umat = [[0 for i in range(size)] for i in range(size)]
     for i in range(size):
         for j in range(0, size):
-            matrix[i][j] = A[i][j]
-    elem = ID
-    size = len(matrix)
+            Umat[i][j] = A[i][j]
+#Filling of an elementary matrix
+    elem =[[0 for i in range(size)] for i in range(size)]
+    for i in range(size):
+        for j in range(0, size):
+            elem[i][j] = Lmat[i][j]
 
-
+    size = len(Umat)
     # (4) Find both U and L matrices
     for i in range(0, size):  # for i in [0,1,2,..,n]
         # (4.1) Find the maximun value in a column in order to change lines
-
-        maxElem = abs(matrix[i][i])
+        maxElem = abs(Umat[i][i])
         maxRow = i
-
         for k in range(i + 1, size):  # Interacting over the next line
-            if (abs(matrix[k][i]) > maxElem):
-                maxElem = abs(matrix[k][i])  # Next line on the diagonal
+            if (abs(Umat[k][i]) > maxElem):
+                maxElem = abs(Umat[k][i])  # Next line on the diagonal
                 maxRow = k
-
         # (4.2) Swap the rows pivoting the maxRow, i is the current row
+        #s
         for k in range(i, size):
-            # Interacting column by column
-            tmp = elem[maxRow][k]
-            elem[maxRow][k] =elem[i][k]
-            elem[i][k] = tmp
+            for k in range(i, size):
+                # Interacting column by column
+                tmp = elem[maxRow][k]
+                elem[maxRow][k] = elem[i][k]
+                elem[i][k] = tmp
 
-        print("ELEM")
-        printmat(elem)
-        print("matrix")
-        printmat(matrix)
-        matrix = multiplyMatrix(elem,matrix)
-        print("resalt")
-        printmat(matrix)
-        elem = ID
-        print("ID")
+            print("ELEM")
+            printmat(elem)
+            print("Umatrix")
+            printmat(Umat)
 
+          # (4.3) Subtract lines
+            for k in range(i + 1, size):
+                piv = -Umat[k][i] / float(Umat[i][i])
+                Lmat[k][i] = piv
+                Umat = multiplyMatrix(elem, Umat)
+                print("resalt")
+                printmat(Umat)
+                print("pivot",piv)
+#-------------------------------------------------------------------------    עובד טוב צריך לבדוק למה piv שזה pivot משתנה
 
-        # (4.3) Subtract lines
-        for k in range(i + 1, size):
-            c = -matrix[k][i] / float(matrix[i][i])
-            ID[k][i] = c  # (4.4) Store the multiplier
-            for j in range(i, size):
-                matrix[k][j] += c * matrix[i][j]  # Multiply with the pivot line and subtract
-
-        # (4.5) Make the rows bellow this one zero in the current column
+        # (4.4) Store the multiplier
+        for j in range(i, size):
+            Umat[k][j] += piv * Umat[i][j]  # Multiply with the pivot line and subtract       # (4.5) Make the rows bellow this one zero in the current column
         for k in range(i + 1, size):
             matrix[k][i] = 0
 
     size = len(ID)
-
+'''
     # (5) Perform substitutioan Ly=b
     y = [0 for i in range(size)]
     for i in range(0, size, 1):
@@ -101,6 +101,6 @@ def solv(A):
         for k in range(i - 1, -1, -1):
             matrix[i] -= x[i] * matrix[i][k]'''
 
-#    return x
+#    r'''eturn x'''
 A = [[1,2,3,0],[4,5,6,0],[7,8,8,0]]
-solv(A)
+solvLU(A)
