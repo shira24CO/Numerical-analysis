@@ -46,23 +46,23 @@ def solvLU(A):
     for i in range(0, size):  # for i in [0,1,2,..,n]
         # (4.1) Find the maximun value in a column in order to change lines
 
-        maxElem = abs(Umat[i][i])
-        maxRow = i
+        maxElem = abs(Umat[i][i])  #5
+        maxRow = i                 #0
 
-        for k in range(i + 1, size):  # Interacting over the next line
+        for k in range(i+1, size):  # Interacting over the next line
             if (abs(Umat[k][i]) > maxElem):
                 maxElem = abs(Umat[k][i])  # Next line on the diagonal
                 maxRow = k
         elem = [[0 for i in range(size)] for i in range(size)]
-        for i in range(size):
-            elem[i][i] = 1
+        for z in range(size):
+            elem[z][z] = 1
         # (4.2) Swap the rows pivoting the maxRow, i is the current row
         for k in range(i, size):
             # Interacting column by column
-            tmp = elem[maxRow][k]
-            elem[maxRow][k] =elem[i][k]
-            elem[i][k] = tmp
-
+            for k in range(i,size):
+                tmp = elem[maxRow][k]
+                elem[maxRow][k] = elem[i][k]
+                elem[i][k] = tmp
         print("ELEM")
         printmat(elem)
         print("matrix")
@@ -70,21 +70,26 @@ def solvLU(A):
         Umat = multiplyMatrix(elem, Umat)
         print("resalt")
         printmat(Umat)
-        elem = Lmat
-        print("ID")
-        printmat(elem)
 
-'''        # (4.3) Subtract lines
+
+        # (4.3) Subtract lines
         for k in range(i + 1, size):
-            c = -matrix[k][i] / float(matrix[i][i])
-            ID[k][i] = c  # (4.4) Store the multiplier
-            for j in range(i, size):
-                matrix[k][j] += c * matrix[i][j]  # Multiply with the pivot line and subtract
-
+            c = -Umat[k][i] / float(Umat[i][i])
+            print("pivot" ,c)
+            Lmat[k][i] = c  # (4.4) Store the multiplier
+            elem[k][i] = c
+            print("Elem")
+            printmat(elem)
+            print("matrix")
+            printmat(Umat)
+            print("result")
+            print(multiplyMatrix(elem,Umat))
+            #for j in range(i, size):
+                #Umat[k][j] += c * Umat[i][j]  # Multiply with the pivot line and subtract
         # (4.5) Make the rows bellow this one zero in the current column
-        for k in range(i + 1, size):
-            matrix[k][i] = 0
-
+        #for k in range(i + 1, size):
+            #Umat[k][i] = 0
+'''
     size = len(ID)
 
     # (5) Perform substitutioan Ly=b
