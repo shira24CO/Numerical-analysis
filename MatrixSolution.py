@@ -170,9 +170,9 @@ def elementary_matrix(matrix,result_vector):
             result_vector = multiply_matrix(elementary_mat,result_vector)
             for line in range(len(matrix)):
                 if line == column and matrix[line][column] !=0:
-                    val_for_mat_elementary = 1 / matrix[line][column]
+                    piv = 1 / matrix[line][column]
                     elementary_mat = create_I_matrix(len(matrix))
-                    elementary_mat[line][column] = val_for_mat_elementary
+                    elementary_mat[line][column] = piv
                     result_vector = multiply_matrix(elementary_mat,result_vector)
                     printmat(result_vector)# update result matrix after change
                     matrix = print_state(elementary_mat, matrix)
@@ -188,12 +188,27 @@ def elementary_matrix(matrix,result_vector):
                         swap_columns_of_matrix(matrix,column)
                 elif line != column and line > column:
                     elementary_mat = create_I_matrix(len(matrix))
-                    val_for_mat_elementary = elementary_mat[line][column] - matrix[line][column]
-                    elementary_mat[line][column] = val_for_mat_elementary
+                    piv =- matrix[line][column]/matrix[column][column]
+#                    val_for_mat_elementary = elementary_mat[line][column] - matrix[line][column]
+                    elementary_mat[line][column] = piv
                     matrix = print_state(elementary_mat,matrix)
                     result_vector = multiply_matrix(elementary_mat,result_vector)
                     counter_for_elementary_matrix += 1
                     All_Elementary_matrix[counter_for_elementary_matrix] = elementary_mat
+    counter_for_elementary_operations2 = ((pow(len(matrix),2) + len(matrix) ) / 2) -len(matrix)# In order to create an upper triangular form for matrix 3 *3 we operate 3+2+1 operations(sum of arithmetic progression)
+    counter_for_elementary_matrix = 0
+    while counter_for_elementary_matrix != counter_for_elementary_operations2:
+        for column in range(len(matrix)-1,-1,-1):
+            for line in range(column-1,-1,-1):
+                if line != column and line < column:
+                    elementary_mat = create_I_matrix(len(matrix))
+                    piv = - matrix[line][column] / matrix[column][column]
+                    elementary_mat[line][column] = piv
+                    matrix = print_state(elementary_mat,matrix)
+                    result_vector = multiply_matrix(elementary_mat,result_vector)
+                    counter_for_elementary_matrix += 1
+                    All_Elementary_matrix[counter_for_elementary_matrix] = elementary_mat
+
     print("Results:")
     printmat(result_vector)
 
@@ -213,5 +228,6 @@ def elementary_matrix(matrix,result_vector):
 #print(find_if_invertible(my_mat,3))
 #print(find_determinanta_of_matrix(my_mat))
 
-elementary_matrix([[1,2,3],[2,1,2],[1,1,1]],[[14],[10],[6]])
+elementary_matrix([[-1.41,2,0],[1,-1.41,1],[0,2,-1.41]],[[1],[1],[1]])
+
 #print(multiply_matrix([[1,0,0],[2,1,0],[0,0,1]],[[1],[2],[4]]))
