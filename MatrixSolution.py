@@ -1,37 +1,4 @@
-All_Elementary_matrix = {}
-
-#def receive_size_and_values():
-    #main_matrix = []
-    #size_matrix = int(input("Enter the size of your square matrix:"))
-    #for line in range(1, size_matrix+1):
-        #line_values = []
-        #for column in range(1, size_matrix+1):
-            #value_of_matrix = float(input("Enter value number"+""+str(column)+" in equation number "+str(line)+""))
-            #line_values.append(value_of_matrix)
-        #result_of_equation = float(input("Enter the result of this equation:"))
-        #line_values.append(result_of_equation)
-        #main_matrix.append(line_values)
-    #return main_matrix
-
-
-    #SolveMatrix([[1,2,3],[4,5,6],[7,7,8]])
-
-
-# returns a set of numbers representing number of lines in the matrix that has zero on their diagonal
-
-
-def check_if_matrix_has_zero_on_diagonal(mat):
-    checking = set()
-    for line in range(len(mat)):
-        found_zero = 0
-        for column in range(len(mat)):
-            if (mat[line])[column] == 0 and line == column:
-                found_zero = 1
-                checking.add(line)
-        if found_zero == 0:
-            checking.add(0)
-    return checking
-
+All_Elementary_matrix = {} #stores all the elementary matrix
 
 def printmat(matrix):
     for i in matrix:
@@ -40,8 +7,6 @@ def printmat(matrix):
         print()
     print()
 
-
-# print(check_if_matrix_has_zero_on_diagonal(my_mat))
 def minor_of_an_item_in_the_matrix(mat, line, column):
     temp_matrix = []
     for my_line in range(len(mat)):
@@ -51,7 +16,6 @@ def minor_of_an_item_in_the_matrix(mat, line, column):
                 matrix_line.append(mat[my_line][my_column])
         temp_matrix.append(matrix_line)
     return list(filter(lambda x: x != [], temp_matrix))
-
 
 def find_determinanta_of_matrix(matrix):
     determinanta = 0
@@ -65,13 +29,11 @@ def find_determinanta_of_matrix(matrix):
         column += 1
     return determinanta
 
-
-def product_calculation(vector_line, vector_column):
+def product_calculation(vector_line, vector_column): #Multiply line and column
     result = 0
     for element in range(len(vector_line)):
         result += vector_line[element]*vector_column[element]
     return result
-
 
 def swap_lines_of_matrix(matrix,index_line1,index_line2):
     for column in range(len(matrix)):
@@ -95,8 +57,6 @@ def swap_columns_of_matrix(matrix,index_column1): #'matrix' is a matrix that has
                 matrix[index][last_column] = 0
         return
 
-
-
 def multiply_matrix(mat1,mat2): # matrixes of n*n
     new_mat = []  # contains the result of the multiplication
     line_index = 0
@@ -111,7 +71,7 @@ def multiply_matrix(mat1,mat2): # matrixes of n*n
         new_mat.append(temp_line_mat)
     return new_mat
 
-def multiplyMatrix(mat1,mat2):
+"""def multiplyMatrix(mat1,mat2):
     result = []
     for i in range(len(mat1)):
         list = []
@@ -122,8 +82,7 @@ def multiplyMatrix(mat1,mat2):
             list.append(res)
         result.append(list)
     return result
-
-
+"""
 def create_I_matrix(size):
     matrixI =[]
     for i in range(size):
@@ -158,12 +117,10 @@ def print_state(elementary,matrix):
     printmat(result)
     return result
 
-
-
 def elementary_matrix(matrix,result_vector):
     counter_for_elementary_matrix = 0
     counter_for_elementary_operations1 = (pow(len(matrix),2) + len(matrix) ) / 2 # In order to create an upper triangular form for matrix 3 *3 we operate 3+2+1 operations(sum of arithmetic progression)
-    while counter_for_elementary_matrix != counter_for_elementary_operations1:  # until we receive the I matrix
+    while counter_for_elementary_matrix != counter_for_elementary_operations1:
         for column in range(len(matrix)):
             elementary_mat = find_max_of_column(matrix,column)
             matrix = print_state(elementary_mat,matrix)
@@ -174,7 +131,6 @@ def elementary_matrix(matrix,result_vector):
                     elementary_mat = create_I_matrix(len(matrix))
                     elementary_mat[line][column] = piv
                     result_vector = multiply_matrix(elementary_mat,result_vector)
-                    printmat(result_vector)# update result matrix after change
                     matrix = print_state(elementary_mat, matrix)
                     counter_for_elementary_matrix += 1
                     All_Elementary_matrix[counter_for_elementary_matrix] = elementary_mat   # Enter new elementary matrix in the dictionary.
@@ -189,13 +145,13 @@ def elementary_matrix(matrix,result_vector):
                 elif line != column and line > column:
                     elementary_mat = create_I_matrix(len(matrix))
                     piv =- matrix[line][column]/matrix[column][column]
-#                    val_for_mat_elementary = elementary_mat[line][column] - matrix[line][column]
                     elementary_mat[line][column] = piv
                     matrix = print_state(elementary_mat,matrix)
                     result_vector = multiply_matrix(elementary_mat,result_vector)
                     counter_for_elementary_matrix += 1
                     All_Elementary_matrix[counter_for_elementary_matrix] = elementary_mat
-    counter_for_elementary_operations2 = ((pow(len(matrix),2) + len(matrix) ) / 2) -len(matrix)# In order to create an upper triangular form for matrix 3 *3 we operate 3+2+1 operations(sum of arithmetic progression)
+    # Until here we receive an upper triangle matrix
+    counter_for_elementary_operations2 = ((pow(len(matrix),2) + len(matrix) ) / 2) -len(matrix)
     counter_for_elementary_matrix = 0
     while counter_for_elementary_matrix != counter_for_elementary_operations2:
         for column in range(len(matrix)-1,-1,-1):
@@ -209,25 +165,13 @@ def elementary_matrix(matrix,result_vector):
                     counter_for_elementary_matrix += 1
                     All_Elementary_matrix[counter_for_elementary_matrix] = elementary_mat
 
-    print("Results:")
+    print("Solution of the linear equations:")
     printmat(result_vector)
 
 
-    # Until here we receive an upper triangle matrix
-    #counter_for_elementary_operations2 = pow(len(matrix),2) - counter_for_elementary_operations1
-    #counter_for_elementary_matrix2 = 0
-    #while counter_for_elementary_matrix2 != counter_for_elementary_operations2:
-        #for line in range(len(matrix)):
-            #for column in range(len(matrix))
+MAT = [[-1.41,2,0],[0,2,-1.41],[1,-1.41,1]]
+if find_determinanta_of_matrix(MAT) == 0:
+    print('Not invertable')
+else:
+   elementary_matrix([[-1.41,2,0],[0,2,-1.41],[1,-1.41,1]],[[1],[1],[1]])
 
-
-
-# my_mat = receive_size_and_values()
-#my_mat2 = receive_size_and_values()
-#print(multiply_matrix(my_mat,my_mat2))
-#print(find_if_invertible(my_mat,3))
-#print(find_determinanta_of_matrix(my_mat))
-
-elementary_matrix([[-1.41,2,0],[1,-1.41,1],[0,2,-1.41]],[[1],[1],[1]])
-
-#print(multiply_matrix([[1,0,0],[2,1,0],[0,0,1]],[[1],[2],[4]]))
