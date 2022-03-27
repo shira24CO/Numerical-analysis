@@ -152,8 +152,8 @@ def elementary_matrix(matrix,result_vector):
                     All_Elementary_matrix[counter_for_elementary_matrix] = elementary_mat
     # Until here we receive an upper triangle matrix
     counter_for_elementary_operations2 = ((pow(len(matrix),2) + len(matrix) ) / 2) -len(matrix)
-    counter_for_elementary_matrix = 0
-    while counter_for_elementary_matrix != counter_for_elementary_operations2:
+    counter_for_elementary_matrix2 = 0
+    while counter_for_elementary_matrix2 != counter_for_elementary_operations2:
         for column in range(len(matrix)-1,-1,-1):
             for line in range(column-1,-1,-1):
                 if line != column and line < column:
@@ -162,8 +162,8 @@ def elementary_matrix(matrix,result_vector):
                     elementary_mat[line][column] = piv
                     matrix = print_state(elementary_mat,matrix)
                     result_vector = multiply_matrix(elementary_mat,result_vector)
-                    counter_for_elementary_matrix += 1
-                    All_Elementary_matrix[counter_for_elementary_matrix] = elementary_mat
+                    counter_for_elementary_matrix2 += 1
+                    All_Elementary_matrix[counter_for_elementary_matrix+counter_for_elementary_matrix2] = elementary_mat
 
     print("Solution of the linear equations:")
     printmat(result_vector)
